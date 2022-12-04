@@ -1,0 +1,42 @@
+version: "3"
+
+services:
+  apache:
+    image: httpd:alpine
+    container_name: apache
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./code:/var/www/html
+      - ./webserver/httpd.conf:/usr/local/apache2/conf/httpd.conf
+      - ./data/logs:/var/log
+  php:
+    container_name: php
+    user: "1000:1000"
+    build:
+      context: ./webserver
+      args:
+        PHP_VERSION: ${PHP_VERSION:-8.1}
+        ENV: ${ENV:-production}
+    volumes:
+      - ./code:/var/www/html
+      - ./webserver/php-ini-overrides.ini:/usr/local/etc/php/conf.d/extra.ini
+      - ./data/logs:/var/log
+  database:
+    image: mariadb:${MARIADB_VERSION:-latest}
+    container_name: mariadb
+    ports: 
+      - ${DB_PUBLIC_PORT:-3306}:3306
+    environment: 
+      - MYSQL_USER=${MYSQL_USER:-dev}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD:-dev}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-root}
+    volumes: 
+      - db:/var/lib/mysql
+
+volumes:
+  db:
+
+networks:
+  webserver:
