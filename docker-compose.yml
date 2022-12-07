@@ -8,7 +8,7 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - ./code:/var/www/html
+      - ./../code:/var/www/html
       - ./webserver/httpd.conf:/usr/local/apache2/conf/httpd.conf
       - ./data/logs:/var/log
   php:
@@ -20,7 +20,7 @@ services:
         PHP_VERSION: ${PHP_VERSION:-8.1}
         ENV: ${ENV:-production}
     volumes:
-      - ./code:/var/www/html
+      - ./../code:/var/www/html
       - ./webserver/php-ini-overrides.ini:/usr/local/etc/php/conf.d/extra.ini
       - ./data/logs:/var/log
   database:
