@@ -17,7 +17,7 @@ services:
     build:
       context: ./webserver
       args:
-        PHP_VERSION: ${PHP_VERSION:-8.1}
+        PHP_VERSION: ${PHP_VERSION:-8.2}
         ENV: ${ENV:-production}
     volumes:
       - ./../code:/var/www/html

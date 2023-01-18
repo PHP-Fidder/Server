@@ -15,5 +15,7 @@ RUN npm install --global yarn
 ARG ENV=${ENV:-production}
 
 RUN if [ "$ENV" = "dev" ] ; then pecl install xdebug && docker-php-ext-enable xdebug; fi
+RUN if [ "$ENV" = "dev" ] ; then cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini; fi
+RUN if [ "$ENV" = "production" ] ; then cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini; fi
 
 CMD ["php-fpm"]
